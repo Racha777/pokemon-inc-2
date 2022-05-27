@@ -5,8 +5,8 @@ import PokemonsLayout from "./layouts/Pokemons/PokemonsLayout";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/pokemon" replace={true}/>} />
-      <Route path="/pokemon" element={<PokemonsLayout />}>
+      <Route path="/" element={<Navigate to="/pokemons" replace={true}/>} />
+      <Route path="/pokemons" element={<PokemonsLayout />}>
         <Route path="create" element={<h2>Create Pokemons</h2>} />
         <Route path="update" element={<h2>Update Pokemons</h2>} />
         <Route index element={<h2>Pokemons</h2>} />
