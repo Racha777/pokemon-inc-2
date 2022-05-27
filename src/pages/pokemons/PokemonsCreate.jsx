@@ -1,3 +1,5 @@
+import PokemonsForm from "../../component/pokemons/PokemonsForm";
+
 const PokemonsCreate = () => {
   return (
     <section className="py-8">
@@ -5,6 +7,7 @@ const PokemonsCreate = () => {
         <h2 className="text-yellow-400 text-3xl text-center font-bold">
           Crear Pokemon
         </h2>
+        <PokemonsForm/>
       </div>
     </section>
   );
