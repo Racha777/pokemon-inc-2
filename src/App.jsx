@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { PokemonsProvider } from "./context/PokemonsContext";
 import "./App.css";
 import PokemonsLayout from "./layouts/Pokemons/PokemonsLayout";
+import PokemonsCreate from "./pages/pokemons/PokemonsCreate";
 
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/pokemons" replace={true} />} />
         <Route path="/pokemons" element={<PokemonsLayout />}>
-          <Route path="create" element={<h2>Create Pokemons</h2>} />
+          <Route path="create" element={<PokemonsCreate/>} />
           <Route path="update" element={<h2>Update Pokemons</h2>} />
           <Route index element={<h2>Pokemons</h2>} />
         </Route>
