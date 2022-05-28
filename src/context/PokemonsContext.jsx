@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { showToast } from "../utils/reactHotToast";
 
 export const PokemonsContext = createContext();
 
@@ -26,6 +27,7 @@ export const PokemonsProvider = ({ children }) => {
       };
       const { data } = await axios(options);
       setPokemons([...pokemons, data]);
+      showToast('😎','Pokemon creado');
       navigate("/pokemons");
     } catch (error) {
       console.log(error.response.data.message);
@@ -53,6 +55,7 @@ export const PokemonsProvider = ({ children }) => {
       };
       const { data } = await axios(options);
       setPokemon(data);
+      showToast('📕','Leido');
     } catch (error) {
       console.log(error.response.data.message);
     }
@@ -76,7 +79,7 @@ export const PokemonsProvider = ({ children }) => {
       setPokemons(pokemons.map((pokemon)=>{
         return pokemon._id===data._id? data : pokemon;
       }));
-      console.log('Editar');
+      showToast('📝', 'Actualizado');
       navigate("/pokemons");
     } catch (error) {
       console.log(error.response.data.message);
@@ -93,8 +96,9 @@ export const PokemonsProvider = ({ children }) => {
       setPokemons(pokemons.filter((pokemon)=>{
         return pokemon._id!==_id;
       }));
+      showToast('🗑', 'Pokemon eliminado');
     } catch (error) {
-      console.log(error.response.data.message);
+      showToast('❌',error.response.data.message);
     }
   };
 
