@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -25,18 +25,51 @@ export const PokemonsProvider = ({ children }) => {
         data: form,
         url:`${process.env.REACT_APP_POKEMON_INC_MERN_API}/pokemons`
       }
-      // const {data}=await axios(options);
-      // setPokemons([...pokemons,data]);
+      const {data}=await axios(options);
+      setPokemons([...pokemons,data]);
       navigate('/pokemons');
     }catch(error){
       console.log(error.response.data.message);
     }
   };
 
+  const readPokemons=async()=>{
+    try{
+      const options={
+        method:'GET',
+        url:`${process.env.REACT_APP_POKEMON_INC_MERN_API}/pokemons`
+      }
+      const {data}=await axios(options);
+      setPokemons(data);
+    }catch(error){
+      console.log(error.response.data.message);
+    }
+  };
+
+  const readPokemon=async(_id)=>{
+    try{
+      const options={
+        method:'GET',
+        url:`${process.env.REACT_APP_POKEMON_INC_MERN_API}/pokemons/${_id}`
+      }
+      const {data}=await axios(options);
+      console.log(data);
+    }catch(error){
+      console.log(error.response.data.message);
+    }
+  };
+
+  // readPokemon('628b37a5355959f3112bf515');
+
+  useEffect(()=>{
+    readPokemons();
+  },[]);
+
   return(
     <PokemonsContext.Provider
         value={{
             pokemons,
+            readPokemon,
             setPokemons,
             createPokemon
         }}
