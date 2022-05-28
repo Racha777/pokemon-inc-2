@@ -5,76 +5,76 @@ import { useNavigate } from "react-router-dom";
 export const PokemonsContext = createContext();
 
 export const PokemonsProvider = ({ children }) => {
+  const navigate = useNavigate();
 
-  const navigate=useNavigate();
-  
-  const [pokemon, setPokemon] = useState([]);
+  const [pokemon, setPokemon] = useState({});
   const [pokemons, setPokemons] = useState([]);
 
-  const createPokemon=async(pokemon)=>{
-    try{
-      const form=new FormData();
-      for(const key in pokemon){
+  const createPokemon = async (pokemon) => {
+    try {
+      const form = new FormData();
+      for (const key in pokemon) {
         form.append(key, pokemon[key]);
       }
-      const options={
-        method:'POST',
-        headers:{
-          'Content-Type':'multipart/form-data'
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
         data: form,
-        url:`${process.env.REACT_APP_POKEMON_INC_MERN_API}/pokemons`
-      }
-      const {data}=await axios(options);
-      setPokemons([...pokemons,data]);
-      navigate('/pokemons');
-    }catch(error){
+        url: `${process.env.REACT_APP_POKEMON_INC_MERN_API}/pokemons`,
+      };
+      const { data } = await axios(options);
+      setPokemons([...pokemons, data]);
+      navigate("/pokemons");
+    } catch (error) {
       console.log(error.response.data.message);
     }
   };
 
-  const readPokemons=async()=>{
-    try{
-      const options={
-        method:'GET',
-        url:`${process.env.REACT_APP_POKEMON_INC_MERN_API}/pokemons`
-      }
-      const {data}=await axios(options);
+  const readPokemons = async () => {
+    try {
+      const options = {
+        method: "GET",
+        url: `${process.env.REACT_APP_POKEMON_INC_MERN_API}/pokemons`,
+      };
+      const { data } = await axios(options);
       setPokemons(data);
-    }catch(error){
+    } catch (error) {
       console.log(error.response.data.message);
     }
   };
 
-  const readPokemon=async(_id)=>{
-    try{
-      const options={
-        method:'GET',
-        url:`${process.env.REACT_APP_POKEMON_INC_MERN_API}/pokemons/${_id}`
-      }
-      const {data}=await axios(options);
-      console.log(data);
-    }catch(error){
+  const readPokemon = async (_id) => {
+    try {
+      const options = {
+        method: "GET",
+        url: `${process.env.REACT_APP_POKEMON_INC_MERN_API}/pokemons/${_id}`,
+      };
+      const { data } = await axios(options);
+      setPokemon(data);
+    } catch (error) {
       console.log(error.response.data.message);
     }
   };
 
   // readPokemon('628b37a5355959f3112bf515');
 
-  useEffect(()=>{
+  useEffect(() => {
     readPokemons();
-  },[]);
+  }, []);
 
-  return(
+  return (
     <PokemonsContext.Provider
-        value={{
-            pokemons,
-            readPokemon,
-            setPokemons,
-            createPokemon
-        }}
+      value={{
+        pokemon,
+        pokemons,
+        readPokemon,
+        setPokemons,
+        createPokemon,
+      }}
     >
-        {children}
+      {children}
     </PokemonsContext.Provider>
   );
 };
