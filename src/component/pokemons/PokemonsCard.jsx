@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+import usePokemons from "../../hooks/usePokemons";
 
 const PokemonsCard = ({ pokemon }) => {
   const { _id, name, type, hp, attack, special, image } = pokemon;
+  const {deletePokemon}=usePokemons();
   return (
     <div className="flex flex-col items-center gap-4 bg-zinc-700 rounded-lg shadow shadow-cyan-300 transition-colors w-full max-w-xs hover:shadow-yellow-400 p-4">
       <figure className="w-32 h-32">
@@ -31,7 +33,10 @@ const PokemonsCard = ({ pokemon }) => {
         >
           Editar
         </Link>
-        <button className="bg-rose-500 rounded-md text-white font-medium px-3 py-1 transition-colors hover:bg-rose-600">
+        <button
+          className="bg-rose-500 rounded-md text-white font-medium px-3 py-1 transition-colors hover:bg-rose-600"
+          onClick={()=>deletePokemon(_id)}
+        >
           Eliminar
         </button>
       </div>

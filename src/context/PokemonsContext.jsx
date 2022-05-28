@@ -58,20 +58,67 @@ export const PokemonsProvider = ({ children }) => {
     }
   };
 
+  const updatePokemon = async (pokemon) => {
+    try {
+      const form = new FormData();
+      for (const key in pokemon) {
+        form.append(key, pokemon[key]);
+      }
+      const options = {
+        method: "PUT",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        data: form,
+        url: `${process.env.REACT_APP_POKEMON_INC_MERN_API}/pokemons/${pokemon._id}`,
+      };
+      const { data } = await axios(options);
+      setPokemons(pokemons.map((pokemon)=>{
+        return pokemon._id===data._id? data : pokemon;
+      }));
+      console.log('Editar');
+      navigate("/pokemons");
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+  };
+
+  const deletePokemon = async (_id) => {
+    try {
+      const options = {
+        method: "DELETE",
+        url: `${process.env.REACT_APP_POKEMON_INC_MERN_API}/pokemons/${_id}`,
+      };
+      const { data } = await axios(options);
+      setPokemons(pokemons.filter((pokemon)=>{
+        return pokemon._id!==_id;
+      }));
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+  };
+
   // readPokemon('628b37a5355959f3112bf515');
 
   useEffect(() => {
     readPokemons();
   }, []);
 
+  const submitPokemonsForm=async(pokemon)=>{
+    if(pokemon._id===undefined){
+      await createPokemon(pokemon);
+    }else{
+      await updatePokemon(pokemon);
+    }
+  };
   return (
     <PokemonsContext.Provider
       value={{
         pokemon,
         pokemons,
         readPokemon,
-        setPokemons,
-        createPokemon,
+        submitPokemonsForm,
+        deletePokemon
       }}
     >
       {children}

@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 const PokemonsForm = () => {
   // const { createPokemon } = usePokemons([]);
   const { id } = useParams();
-  const { createPokemon, pokemon } = usePokemons();
+  const { submitPokemonsForm, pokemon } = usePokemons();
 
   const [formPokemon, setFormPokemon] = useState({
     name: "",
@@ -36,7 +36,7 @@ const PokemonsForm = () => {
         special: yup.string().required("el especial es requerido"),
       })}
       onSubmit={async (values, actions) => {
-        await createPokemon(values);
+        await submitPokemonsForm(values);
         actions.setSubmitting(false);
         actions.resetForm();
       }}

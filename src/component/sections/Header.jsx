@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink} from "react-router-dom";
 const Header = ({ applicationName }) => {
   return (
     <header className="fixed z-80 top-0 left-0 w-full bg-zinc-800 shadow shadow-zinc-500/50">
