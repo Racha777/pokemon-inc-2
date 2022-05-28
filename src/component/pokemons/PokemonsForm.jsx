@@ -3,7 +3,8 @@ import { Field, Form, Formik, ErrorMessage } from "formik";
 import usePokemons from "../../hooks/usePokemons";
 
 const PokemonsForm = () => {
-  const { createPokemon } = usePokemons([]);
+  // const { createPokemon } = usePokemons([]);
+  const {createPokemon} = usePokemons();
   return (
     <Formik
       initialValues={{
@@ -21,11 +22,13 @@ const PokemonsForm = () => {
         attack: yup.string().required("el ataque es requerido"),
         special: yup.string().required("el especial es requerido"),
       })}
-      onSubmit={(values) => {
-        createPokemon(values);
+      onSubmit={async(values,actions) => {
+        await createPokemon(values);
+        actions.setSubmitting(false);
+        actions.resetForm();
       }}
     >
-      {({ handleSubmit }) => {
+      {({ handleSubmit, setFieldValue, isSubmitting }) => {
         return (
           <Form
             onSubmit={handleSubmit}
@@ -98,13 +101,17 @@ const PokemonsForm = () => {
             </div>
             <input
               type="file"
+              name="image"
               className="bg-zinc-800 rounded p-2 text-sm cursor-pointer file:bg-white file:border-0 file:rounded file:font-semibold file:mr-2 file:p-1 file:px-2 file:cursor-pointer file:transition-colors hover:file:bg-zinc-200"
+              onChange={(e)=>setFieldValue('image',e.currentTarget.files[0])}
+              required
             />
             <button
               type="submit"
-              className="bg-cyan-300 rounded-md text-black font-semibold p-2 transition-colors hover:bg-white"
+              className="bg-cyan-300 rounded-md text-black font-semibold p-2 transition-colors hover:bg-white disabled:bg-white/50 disabled:cursor-progress"
+              disabled={isSubmitting}
             >
-              Enviar
+              {isSubmitting? 'Loading': 'Enviar'}
             </button>
           </Form>
         );
