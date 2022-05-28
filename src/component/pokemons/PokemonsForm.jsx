@@ -1,20 +1,33 @@
 import * as yup from "yup";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import usePokemons from "../../hooks/usePokemons";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 const PokemonsForm = () => {
   // const { createPokemon } = usePokemons([]);
-  const {createPokemon} = usePokemons();
+  const { id } = useParams();
+  const { createPokemon, pokemon } = usePokemons();
+
+  const [formPokemon, setFormPokemon] = useState({
+    name: "",
+    type: "",
+    hp: "",
+    attack: "",
+    special: "",
+    image: {},
+  });
+
+  useEffect(() => {
+    if (id && pokemon._id) {
+      setFormPokemon(pokemon);
+    }
+  }, [id, pokemon]);
+
   return (
     <Formik
-      initialValues={{
-        name: "",
-        type: "",
-        hp: "",
-        attack: "",
-        special: "",
-        image: {},
-      }}
+      initialValues={formPokemon}
+      enableReinitialize
       validationSchema={yup.object({
         name: yup.string().required("el nombre es requerido"),
         type: yup.string().required("el tipo es requerido"),
@@ -22,7 +35,7 @@ const PokemonsForm = () => {
         attack: yup.string().required("el ataque es requerido"),
         special: yup.string().required("el especial es requerido"),
       })}
-      onSubmit={async(values,actions) => {
+      onSubmit={async (values, actions) => {
         await createPokemon(values);
         actions.setSubmitting(false);
         actions.resetForm();
@@ -103,15 +116,15 @@ const PokemonsForm = () => {
               type="file"
               name="image"
               className="bg-zinc-800 rounded p-2 text-sm cursor-pointer file:bg-white file:border-0 file:rounded file:font-semibold file:mr-2 file:p-1 file:px-2 file:cursor-pointer file:transition-colors hover:file:bg-zinc-200"
-              onChange={(e)=>setFieldValue('image',e.currentTarget.files[0])}
-              required
+              onChange={(e) => setFieldValue("image", e.currentTarget.files[0])}
+              required={id?false:true}
             />
             <button
               type="submit"
               className="bg-cyan-300 rounded-md text-black font-semibold p-2 transition-colors hover:bg-white disabled:bg-white/50 disabled:cursor-progress"
               disabled={isSubmitting}
             >
-              {isSubmitting? 'Loading': 'Enviar'}
+              {isSubmitting ? "Loading" : id? "Editar" :"Crear"}
             </button>
           </Form>
         );
