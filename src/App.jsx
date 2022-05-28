@@ -12,7 +12,7 @@ function App() {
         <Route path="/" element={<Navigate to="/pokemons" replace={true} />} />
         <Route path="/pokemons" element={<PokemonsLayout />}>
           <Route path="create" element={<PokemonsCreate/>} />
-          <Route path="update" element={<h2>Update Pokemons</h2>} />
+          <Route path=":id" element={<h2>Update Pokemons</h2>} />
           <Route index element={<PokemonsRead/>} />
         </Route>
         <Route path="*" element={<h2>404</h2>} />
