@@ -6,6 +6,7 @@ import PokemonsLayout from "./layouts/Pokemons/PokemonsLayout";
 import PokemonsCreate from "./pages/pokemons/PokemonsCreate";
 import PokemonsRead from "./pages/pokemons/PokemonsRead";
 import PokemonsUpdate from "./pages/pokemons/PokemonsUpdate";
+import Landing404Page from "./pages/landings/Landing404Page";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
           <Route path=":id" element={<PokemonsUpdate />} />
           <Route index element={<PokemonsRead />} />
         </Route>
-        <Route path="*" element={<h2>404</h2>} />
+        <Route path="*" element={<Landing404Page/>} />
       </Routes>
     </PokemonsProvider>
   );
